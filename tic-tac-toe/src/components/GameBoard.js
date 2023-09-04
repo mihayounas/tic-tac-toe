@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GameModal from './GameModal';
 
 class GameBoard extends Component {
   constructor(props) {
@@ -9,8 +10,12 @@ class GameBoard extends Component {
       boardState: Array(9).fill(''), // cell state
       gameActive: true,        // game is still active ?
       winner: null,            // Stores the winner ('X', 'O') or null if no winner yet
+      isModalOpen: true
     };
   }
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
 
   // Event handler for when a cell is clicked
   handleCellClick(index) {
@@ -68,7 +73,13 @@ class GameBoard extends Component {
   render() {
     return (
       <div>
+        {/* Game modal */}
+        <GameModal isOpen={this.state.isModalOpen} closeModal={this.closeModal} />
+
         <h1>Tic Tac Toe</h1>
+        
+        <button onClick={() => this.setState({ isModalOpen: true })}>Help ?</button>
+
         <div className="board">
           {this.state.boardState.map((_, index) => this.renderCell(index))}
         </div>
@@ -80,6 +91,7 @@ class GameBoard extends Component {
             : 'It\'s a draw!'}
         </div>
         <button onClick={() => this.resetBoard()}>Reset Game</button>
+        
       </div>
     );
   }

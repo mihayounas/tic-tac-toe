@@ -7,7 +7,10 @@
   height: 100vh;
   background-color: #f0f0f0;
 }
-
+h1 {
+  margin-left: 50px;
+  font-size: 45px;
+}
 /* game board style */
 .board {
   display: grid;
@@ -40,14 +43,17 @@
 .message {
   font-size: 24px;
   font-weight: bold;
+  margin-left: 75px;
   margin-top: 20px;
 }
 
 button {
   font-size: 16px;
   padding: 10px 20px;
-  margin-left: 90px;
+  margin: 20px auto 0;  
+  display: block;
   margin-top: 20px;
+  margin-bottom: 20px;
   cursor: pointer;
   background-color:  #cf96d6;
   color: #fff;
