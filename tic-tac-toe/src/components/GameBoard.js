@@ -120,7 +120,7 @@ class GameBoard extends Component {
         {/* Display the leaderboard */}
         <div>
     {/* Leaderboard component */}
-    <Leaderboard />
+   
 
     {/* Win counts section */}
     <div className="win-counts-container">
