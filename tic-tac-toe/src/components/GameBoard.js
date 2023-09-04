@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GameModal from './GameModal';
+import Leaderboard from './LeaderBoard';
 
 class GameBoard extends Component {
   constructor(props) {
@@ -8,14 +9,13 @@ class GameBoard extends Component {
     this.state = {
       currentPlayer: 'X',      // Current player ('X' or 'O')
       boardState: Array(9).fill(''), // cell state
-      gameActive: true,        // game is still active ?
+      gameActive: true,        // Is the game still active?
       winner: null,            // Stores the winner ('X', 'O') or null if no winner yet
-      isModalOpen: true
+      isModalOpen: true,       // Controls the Help modal
+      xWins: 0,                // Win count for 'X'
+      oWins: 0,                // Win count for 'O'
     };
   }
-  closeModal = () => {
-    this.setState({ isModalOpen: false });
-  };
 
   // Event handler for when a cell is clicked
   handleCellClick(index) {
@@ -24,18 +24,21 @@ class GameBoard extends Component {
       const newBoardState = [...this.state.boardState];
       newBoardState[index] = this.state.currentPlayer;
 
-      // Check for winner
+      // Check for a winner
       const winner = this.checkWinner(newBoardState);
-      // Determine if the game is still active 
-      const gameActive = !winner && newBoardState.includes('');
 
       // Update the component's state
       this.setState({
         currentPlayer: this.state.currentPlayer === 'X' ? 'O' : 'X',
         boardState: newBoardState,
-        gameActive,
+        gameActive: !winner && newBoardState.includes(''),
         winner,
       });
+
+      // Update the scores if there's a winner
+      if (winner) {
+        this.updateScores(winner);
+      }
     }
   }
 
@@ -55,10 +58,33 @@ class GameBoard extends Component {
       }
     }
 
-    return null; // winner not found
+    return null; // Winner not found
   }
 
-  // Render a cell
+  // Function to update win counts
+  updateScores(result) {
+    if (result === 'X') {
+      this.setState({ xWins: this.state.xWins + 1 });
+    } else if (result === 'O') {
+      this.setState({ oWins: this.state.oWins + 1 });
+    }
+  }
+
+  // Reset the game board
+  resetBoard() {
+    this.setState({
+      currentPlayer: 'X',
+      boardState: Array(9).fill(''),
+      gameActive: true,
+      winner: null,
+    });
+  }
+
+  // Function to close the Help modal
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
   renderCell(index) {
     return (
       <div
@@ -73,11 +99,10 @@ class GameBoard extends Component {
   render() {
     return (
       <div>
-        {/* Game modal */}
+        {/* Help modal */}
         <GameModal isOpen={this.state.isModalOpen} closeModal={this.closeModal} />
 
         <h1>Tic Tac Toe</h1>
-        
         <button onClick={() => this.setState({ isModalOpen: true })}>Help ?</button>
 
         <div className="board">
@@ -88,22 +113,24 @@ class GameBoard extends Component {
             ? `Player ${this.state.winner} wins!`
             : this.state.gameActive
             ? `Current Player: ${this.state.currentPlayer}`
-            : 'It\'s a draw!'}
+            : "It's a draw!"}
         </div>
         <button onClick={() => this.resetBoard()}>Reset Game</button>
-        
+
+        {/* Display the leaderboard */}
+        <div>
+    {/* Leaderboard component */}
+    <Leaderboard />
+
+    {/* Win counts section */}
+    <div className="win-counts-container">
+      <p className="win-count">Player X Wins: {this.state.xWins}</p>
+      <p className="win-count">Player O Wins: {this.state.oWins}</p>
+    </div>
+  </div>
+
       </div>
     );
-  }
-
-  // Reset the game board
-  resetBoard() {
-    this.setState({
-      currentPlayer: 'X',
-      boardState: Array(9).fill(''),
-      gameActive: true,
-      winner: null,
-    });
   }
 }
 

@@ -8,7 +8,7 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     transform: 'translate(-50%, -50%)',
-    background: '#ff99cc', // Pink background color
+    background: '#ff99cc', 
     borderRadius: '10px',
     padding: '20px',
     textAlign: 'center',
@@ -16,7 +16,7 @@ const customStyles = {
     fontSize:'25px'
   },
   overlay: {
-    background: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background overlay
+    background: 'rgba(0, 0, 0, 0.5)',
   },
 };
 
